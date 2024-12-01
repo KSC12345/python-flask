@@ -3,10 +3,22 @@ from config import load_config
 from src.routes.init import api_blueprint
 from src.routes.user import user_blueprint
 from src.routes.service import service_blueprint
+from flasgger import Swagger
+#from swaggger_config import swager_init_config
+import os
 
 envConfig = load_config()
 def create_app():
     app = Flask(__name__)
+
+    # Configuring Swagger
+    app.config['SWAGGER'] = {
+        'title': 'Sample Python Flask API',
+        'description':'This is a sample API with Swagger documentation',
+        'uiversion': 3
+    }
+    if os.environ.get('ENV') != 'PROD':
+      swagger = Swagger(app)
 
     # Register blueprints (if any)
     # from .blueprints.example import example_bp

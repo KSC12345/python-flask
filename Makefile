@@ -11,7 +11,8 @@ test:
 
 deploy: 
 	python3 start.py
-	
-local: install deploy
+deploy_local: 
+	ENV=development python3 start.py	
+local: install deploy_local
 
 all:install lint test deploy
