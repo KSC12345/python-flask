@@ -2,6 +2,7 @@ from flask import Flask,jsonify
 from config import load_config
 from src.routes.init import api_blueprint
 from src.routes.user import user_blueprint
+from src.routes.service import service_blueprint
 
 envConfig = load_config()
 def create_app():
@@ -12,6 +13,7 @@ def create_app():
     # app.register_blueprint(example_bp)
     app.register_blueprint(api_blueprint, url_prefix='/api')
     app.register_blueprint(user_blueprint, url_prefix='/api/user')
+    app.register_blueprint(service_blueprint, url_prefix='/api/service')
 
     # Custom error handler for 404
     @app.errorhandler(404)
@@ -22,5 +24,10 @@ def create_app():
     @app.errorhandler(400)
     def bad_request(error):
         return jsonify({"error": error.description or "Bad request"}), 400
+    
+      # Custom error handler for 500
+    @app.errorhandler(500)
+    def server_error(error):
+        return jsonify({"error": error.description or "Bad request"}), 500
 
     return app
