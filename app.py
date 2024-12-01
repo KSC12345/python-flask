@@ -15,7 +15,17 @@ def create_app():
     app.config['SWAGGER'] = {
         'title': 'Sample Python Flask API',
         'description':'This is a sample API with Swagger documentation',
-        'uiversion': 3
+        'uiversion': 3,
+         "swagger_ui": True,
+         "specs_route": "/api/apidocs/",
+          "specs": [
+        {
+            "endpoint": 'api',  # Change the endpoint here
+            "route": '/api/my_custom_endpoint.json',
+            "rule_filter": lambda rule: True,  # all in
+            "model_filter": lambda tag: True,  # all in
+        }
+    ],
     }
     if os.environ.get('ENV') != 'PROD':
       swagger = Swagger(app)
@@ -23,7 +33,7 @@ def create_app():
     # Register blueprints (if any)
     # from .blueprints.example import example_bp
     # app.register_blueprint(example_bp)
-    app.register_blueprint(api_blueprint, url_prefix='/api')
+    app.register_blueprint(api_blueprint, url_prefix='/api/init')
     app.register_blueprint(user_blueprint, url_prefix='/api/user')
     app.register_blueprint(service_blueprint, url_prefix='/api/service')
 
