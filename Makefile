@@ -2,6 +2,8 @@ venv:
 	python3 -m venv venv
 	chmod +x venv/bin/activate
 	. ./venv/bin/activate
+pipenvinstall:
+	pipenv install --ignore-pipfile
 install:
 	#install commands
 	pip3 install --upgrade pip &&\
@@ -17,4 +19,6 @@ deploy:
 deploy_local: 
 	ENV=development python3 start.py	
 local: venv install deploy_local
-prod:  venv install deploy
+local_pip: pipenvinstall deploy_local
+prod: venv install deploy
+prod_pip: pipenvinstall deploy
