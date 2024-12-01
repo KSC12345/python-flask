@@ -8,8 +8,4 @@ class Config(object):
     port=5001
     url = "https://jsonplaceholder.typicode.com/users/1"
     # MongoEngine config
-    MONGODB_SETTINGS = {
-        'db': 'your_database',
-        'host': 'localhost',
-        'port': 27017
-    }
+    MONGO_URI="mongodb://localhost:27017/flaskdb"

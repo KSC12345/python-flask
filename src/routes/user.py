@@ -1,4 +1,5 @@
 from flask import Blueprint,jsonify,abort,request
+from src.dao.userDao import getUserList,insertUser,find_user_by_id,update_user_by_id,delete_user_by_id
 
 user_blueprint = Blueprint('user', __name__)
 
@@ -31,7 +32,9 @@ def userList():
                     type: string
                     example: "Sincere@april.biz"
         """
-    return jsonify(users)
+  
+
+    return jsonify(getUserList())
 
 # Add routes to the blueprint
 @user_blueprint.route('/<int:user_id>', methods=['GET'])
@@ -64,10 +67,14 @@ def findUser(user_id):
           404:
             description: User not found
         """
-    user = users.get(user_id)
-    if not user:
-        abort(404, description=f"User with ID {user_id} not found.")
-    return jsonify(user)
+    try:
+        user = find_user_by_id(user_id)
+        if not user:
+            abort(404, description=f"User with ID {user_id} not found.")  
+        return jsonify(user)
+    except Exception as e:
+            abort(404, description=f"User with ID {user_id} not found.")
+
 
 @user_blueprint.route('/search', methods=['GET'])
 def searchUser():
@@ -101,10 +108,14 @@ def searchUser():
         """
     user_id = request.args.get('id')  # Returns the value of 'query'
  
-    user = users.get(int(user_id))
-    if not user:
-        abort(404, description=f"User with ID {user_id} not found.")
-    return jsonify(user)
+    try:
+        user = find_user_by_id(user_id)
+        if not user:
+            abort(404, description=f"User with ID {user_id} not found.")  
+        return jsonify(user)
+    except Exception as e:
+            abort(404, description=f"User with ID {user_id} not found.")
+
 
 
 
@@ -141,9 +152,82 @@ def createUser():
        # Process the data
     name = data['name']
     email = data['email']
-    
-    dict_length = len(users)
-    print("dict_length",dict_length)
-    users[dict_length+1]=data
-    print(users)
-    return jsonify({"message": f"User {name} registered successfully!", "email": email}), 201
+    newUser = insertUser(data)
+   
+    return jsonify({"message": f"User {name} registered successfully!", "email": email,"id":newUser['_id']}), 201
+
+# Add routes to the blueprint
+@user_blueprint.route('', methods=['PUT'])
+def updateUser():
+    """
+        Update user details
+        ---
+        parameters:
+          - name: user
+            in: body
+            required: true
+            schema:
+              id: UpdateUser
+              required:
+                - name
+                - email
+                - id
+              properties:
+                id:
+                  type: string
+                  example: "1"
+                name:
+                  type: string
+                  example: "John Doe"
+                email:
+                  type: string
+                  example: "john.doe@example.com"
+        responses:
+          201:
+            description: User created successfully
+        """
+    data = request.get_json()
+      # Validate the received data
+    if not data or 'id' not in data or 'name' not in data or 'email' not in data:
+        return jsonify({"error": "Invalid input"}), 400
+       # Process the data
+    id = data['id']
+    try:
+        user = update_user_by_id(int(id),data)
+        if not user:
+            abort(404, description=f"User with ID {id} not found.")  
+        return jsonify(user)
+    except ValueError as e:
+            print("Error:", e)
+            abort(404, description=f"{e}")
+    except Exception as e:
+            print("Error:", e)
+            abort(500, description=f"{e}")
+
+
+
+# Add routes to the blueprint
+@user_blueprint.route('/<int:user_id>', methods=['DELETE'])
+def deleteUser(user_id):
+    """
+        Delete user by user ID
+        This will automatically be documented in Swagger UI.
+        ---
+        parameters:
+          - name: user_id
+            in: path
+            type: integer
+            required: true
+            description: The user ID to retrieve data for
+        responses:
+          201:
+            description: User delete successfully
+        """
+    try:
+        user = delete_user_by_id(user_id)
+        return jsonify(description=f"{user}")
+    except ValueError as e:
+            print("Error:", e)
+            abort(404, description=f"{e}")
+    except Exception as e:
+            abort(500, description=f"User with ID {user_id} not found.")

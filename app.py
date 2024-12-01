@@ -4,6 +4,7 @@ from src.routes.init import api_blueprint
 from src.routes.user import user_blueprint
 from src.routes.service import service_blueprint
 from flasgger import Swagger
+from src.db import close_db
 #from swaggger_config import swager_init_config
 import os
 
@@ -53,5 +54,9 @@ def create_app():
     @app.errorhandler(500)
     def server_error(error):
         return jsonify({"error": error.description or "Bad request"}), 500
+    
+    @app.teardown_appcontext
+    def teardown_db(exception):
+        close_db()
 
     return app
