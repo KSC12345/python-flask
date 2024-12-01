@@ -17,3 +17,6 @@
 
 1. Run Application : `make local_pip`
 
+Tutorial : `https://realpython.com/pipenv-guide/`
+https://www.youtube.com/watch?v=zDYL22QNiWk&ab_channel=CoreySchafer
+
