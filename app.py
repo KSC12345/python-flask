@@ -14,6 +14,7 @@ def create_app():
     # Configuring Swagger
     app.config['SWAGGER'] = {
         'title': 'Sample Python Flask API',
+        "version": "1.0.0", 
         'description':'This is a sample API with Swagger documentation',
         'uiversion': 3,
          "swagger_ui": True,
@@ -23,7 +24,8 @@ def create_app():
             "endpoint": 'api',  # Change the endpoint here
             "route": '/api/my_custom_endpoint.json',
             "rule_filter": lambda rule: True,  # all in
-            "model_filter": lambda tag: True,  # all in
+            "model_filter": lambda tag: True,  # all in,
+            "termsOfService": "http://example.com/terms", 
         }
     ],
     }
