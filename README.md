@@ -22,3 +22,5 @@ https://www.youtube.com/watch?v=zDYL22QNiWk&ab_channel=CoreySchafer
 
 MongoDB Setup URL : https://www.youtube.com/watch?v=8gUQL2zlpvI&ab_channel=ProgrammingKnowledge
 
+MongoDB Path:mongod --dbpath=<PATH>/data/db
+
