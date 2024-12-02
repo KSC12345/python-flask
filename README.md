@@ -24,6 +24,8 @@ MongoDB Setup URL : https://www.youtube.com/watch?v=8gUQL2zlpvI&ab_channel=Progr
 
 MongoDB Path:mongod --dbpath=<PATH>/data/db
 
+
 Configure MongoDB Replica:
+Start replica on local system:  mongosh --port 27018
 https://premaseem.wordpress.com/2016/02/14/mongodb-script-to-run-sharding-with-replica-set-on-local-machine/
 
