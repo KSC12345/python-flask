@@ -1,6 +1,13 @@
 from src.db import get_db,get_connection
 from pymongo import WriteConcern
 from config import load_config
+from concurrent.futures import ThreadPoolExecutor
+import os
+
+num_threads = os.cpu_count() * 2 
+print("num_threads: ",num_threads)
+executor = ThreadPoolExecutor(max_workers=num_threads)
+
 envConfig = load_config()
 
 def getUserList():
@@ -8,10 +15,16 @@ def getUserList():
      return userList
 
 def insertUser(userData):
-      if (envConfig.MONGO_REPLICA):
+      future = executor.submit(threadSafeInsertUser, userData)
+      result = future.result()
+      return result
+      
+def threadSafeInsertUser(userData):
+     if (envConfig.MONGO_REPLICA):
           return transactionInsertUser(userData)
-      else:
+     else:
           return withoutTransactionInsertUser(userData)
+    
 
 def withoutTransactionInsertUser(userData):
      new_user_id = get_next_sequence_userid_value("userId")
@@ -49,6 +62,8 @@ def transactionInsertUser(userData):
          except Exception as e:
             print("Transaction failed. Aborting...", e)
             raise
+         finally:
+          session.end_session()
 # Find user by ID
 def find_user_by_id(user_id):
     try:
