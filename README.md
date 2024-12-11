@@ -20,3 +20,8 @@
 Tutorial : `https://realpython.com/pipenv-guide/`
 https://www.youtube.com/watch?v=zDYL22QNiWk&ab_channel=CoreySchafer
 
+AWS Deployment:
+https://www.youtube.com/watch?v=a1nnZDps_yM&ab_channel=ProgrammingwithAlex
+https://github.com/cloudacademy/python-flask-microservices/tree/master/user-service
+
+https://nishankkoul.hashnode.dev/end-to-end-cicd-pipeline-on-aws-for-a-flask-application
