@@ -25,3 +25,5 @@ https://www.youtube.com/watch?v=a1nnZDps_yM&ab_channel=ProgrammingwithAlex
 https://github.com/cloudacademy/python-flask-microservices/tree/master/user-service
 
 https://nishankkoul.hashnode.dev/end-to-end-cicd-pipeline-on-aws-for-a-flask-application
+
+https://stackoverflow.com/questions/70955307/how-to-install-google-chrome-in-a-docker-container
