@@ -1,0 +1,51 @@
+FROM ubi9/python-311
+
+# Install necessary dependencies for Chrome and ChromeDriver
+RUN microdnf update -y && \
+    microdnf install -y \
+    chromium \
+    harfbuzz \
+    freetype-devel \
+    fontconfig \
+    libgdi32 \
+    atk \
+    pango \
+    cairo \
+    cups-libs \
+    libstdc++ \
+    glibc \
+    gcc-c++ \
+    libX11 \
+    libXcomposite \
+    libXcursor \
+    libXdamage \
+    libXext \
+    libXi \
+    libXtst \
+    libXt \
+    alsa-lib \
+    mesa-libGL \
+    nss \
+    expat \
+    libuuid \
+    libnsl \
+    libxcb \
+    zlib \
+    systemd \
+    ca-certificates && \
+    microdnf clean all
+
+# Copy your application code
+COPY . /app
+
+# Install Python dependencies
+WORKDIR /app
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Ensure chromedriver is executable
+# RUN chmod +x /usr/local/bin/chromedriver # Commented out; chromedriver-py usually handles this
+
+# Set environment variables (if needed, e.g., display)
+# ENV DISPLAY=:99
+
+CMD ["python", "your_script.py"]  # Or however you start your app
