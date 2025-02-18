@@ -1,0 +1,46 @@
+FROM registry.access.redhat.com/ubi8/python-311
+
+# Install necessary system dependencies for Chromium
+RUN yum install -y \
+    alsa-lib-devel \
+    atk-devel \
+    cups-devel \
+    gdk-pixbuf2-devel \
+    glib2-devel \
+    gtk3-devel \
+    libX11-devel \
+    libXcomposite-devel \
+    libXcursor-devel \
+    libXdamage-devel \
+    libXext-devel \
+    libXi-devel \
+    libXinerama-devel \
+    libXrandr-devel \
+    libXrender-devel \
+    libXtst-devel \
+    libappindicator-gtk3-devel \
+    nss-devel \
+    pango-devel \
+    xorg-x11-server-utils \
+    xvfb
+
+# Install Chromium (you might need to adjust the URL for the correct version)
+RUN wget https://commondatastorage.googleapis.com/chromium-browser-snapshots/Linux_x64/1144988/chrome-linux.zip -O chromium.zip && \
+    unzip chromium.zip && \
+    rm chromium.zip
+
+# Set the Chromium binary path (important!)
+ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE /chrome-linux/chrome
+
+# Install Playwright (without deps, as you're handling Chromium)
+RUN pip install playwright
+
+# Install any other Python dependencies you need
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# Your application code
+COPY . /app
+WORKDIR /app
+
+CMD ["python", "your_script.py"]
