@@ -1,0 +1,25 @@
+FROM registry.access.redhat.com/ubi9/python-311
+
+# Install Chromium and dependencies
+RUN dnf install -y --enablerepo=codeready-builder-for-rhel-9-x86_64-rpms \
+    chromium \
+    chromium-common \
+    chromium-headless \
+    libXcomposite \
+    libXcursor \
+    libXdamage \
+    libXext \
+    libXi \
+    libXtst \
+    cups-libs \
+    libXScrnSaver \
+    libxkbcommon \
+    pango \
+    atk \
+    at-spi2-atk \
+    gtk3 \
+    && dnf clean all
+
+# Configure Playwright
+ENV PLAYWRIGHT_BROWSERS_PATH=0
+RUN pip install playwright
